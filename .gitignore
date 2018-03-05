@@ -1,2 +1,3 @@
-#ide
-.ide/
+# Idea
+.idea/
+.project

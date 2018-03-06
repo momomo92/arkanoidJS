@@ -1,0 +1,15 @@
+{
+  "name": "piotr",
+  "version": "1",
+  "description": "test",
+  "main": "test",
+  "repository": {
+      "url": "https://Niemon@bitbucket.org/poznanTeam/arkanoid.git",
+      "type": "git"
+  },
+  "author": "Piotr Melewski <melewskip@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": ">=3.3.1"
+  }
+}

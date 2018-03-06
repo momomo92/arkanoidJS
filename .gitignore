@@ -4,3 +4,7 @@
 
 #GIT
 .git/
+
+# Components
+/scripts/components/
+yarn.lock

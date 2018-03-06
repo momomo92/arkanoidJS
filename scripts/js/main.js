@@ -2,6 +2,12 @@ const canvas = document.getElementById('canvas');
 const context = canvas.getContext("2d");
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
+const brickRowCount = 3;
+const brickColumnsCount = 5;
+const brickWidth = 75;
+const brickHeight = 10;
+const brickPadding = 5;
+let brick = [];
 let ballPositionX = canvasWidth/2;
 let ballPositionY = canvasHeight-30;
 let ballRadius = 10;
@@ -12,6 +18,15 @@ const paddleWidth = 75;
 let paddlePositionX = (canvasWidth - paddleWidth)/2;
 let rightPressed = false;
 let leftPressed = false;
+
+for (let column = 0; column < brickColumnsCount; column++) {
+    brick[column] = [];
+    for (let row = 0; row < brickRowCount; row++) {
+        let brickX = column * (brickWidth + brickPadding) + 30;
+        let brickY = row * (brickHeight + brickPadding) + 30;
+        brick[column][row] = {'positionX': brickX, 'positionY': brickY, 'visible': true};
+    }
+}
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -35,11 +50,31 @@ function keyUpHandler(e) {
 
 function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
+    drawBricks();
     drawBall();
     drawPaddle();
+    collisionDetection();
     changeBallPositionX();
     changeBallPositionY();
     changePaddlePosition();
+}
+
+function drawBricks() {
+    for (let column = 0; column < brickColumnsCount; column++) {
+        for (let row = 0; row < brickRowCount; row++) {
+            if (brick[column][row].visible === true) {
+                drawBrick(brick[column][row].positionX, brick[column][row].positionY);
+            }
+        }
+    }
+}
+
+function drawBrick(brickX, brickY) {
+    context.beginPath();
+    context.rect(brickX, brickY, brickWidth, brickHeight);
+    context.fillStyle = "#0095DD";
+    context.fill();
+    context.closePath();
 }
 
 function drawBall() {
@@ -56,6 +91,24 @@ function drawPaddle() {
     context.fillStyle = "#0095DD";
     context.fill();
     context.closePath();
+}
+
+function collisionDetection() {
+    for (let column = 0; column < brickColumnsCount; column++) {
+        for (let row = 0; row < brickRowCount; row++) {
+            let brickData = brick[column][row];
+
+            if (brickData.visible === true) {
+                let isPositionY = ballPositionY > brickData.positionY && ballPositionY < brickData.positionY + brickHeight + ballRadius;
+                let isPositionX = ballPositionX > brickData.positionX && ballPositionX < brickData.positionX + brickWidth;
+
+                if (isPositionY && isPositionX) {
+                    numberToChangeBallPositionY = -numberToChangeBallPositionY;
+                    brickData.visible = false;
+                }
+            }
+        }
+    }
 }
 
 function changeBallPositionX() {

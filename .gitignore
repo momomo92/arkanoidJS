@@ -6,7 +6,7 @@
 .git/
 
 # Components
-/scripts/components/
+scripts/components/
 
 # Other
 ._*

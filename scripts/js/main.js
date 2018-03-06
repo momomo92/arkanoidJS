@@ -12,19 +12,18 @@ let ballPositionX = canvasWidth/2;
 let ballPositionY = canvasHeight-30;
 let ballRadius = 10;
 let numberToChangeBallPositionX = 1;
-let numberToChangeBallPositionY;
+let numberToChangeBallPositionY = 1;
 const paddleHeight = 10;
 const paddleWidth = 75;
 let paddlePositionX = (canvasWidth - paddleWidth)/2;
 let rightPressed = false;
 let leftPressed = false;
 let points = 0;
+let lives = 3;
 const startWay = Math.floor((Math.random() * 2) + 1);
 
-if (startWay == 1) {
-    numberToChangeBallPositionY = startWay;
-} else {
-    numberToChangeBallPositionY = -startWay;
+if (startWay == 2) {
+    numberToChangeBallPositionY = -numberToChangeBallPositionY;
 }
 
 for (let column = 0; column < brickColumnsCount; column++) {
@@ -36,29 +35,20 @@ for (let column = 0; column < brickColumnsCount; column++) {
     }
 }
 
-document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
+document.addEventListener("mousemove", mouseMoveHandler, false);
 
-function keyDownHandler(e) {
-    if(e.keyCode == 39) {
-        rightPressed = true;
-    }
-    else if(e.keyCode == 37) {
-        leftPressed = true;
-    }
-}
-function keyUpHandler(e) {
-    if(e.keyCode == 39) {
-        rightPressed = false;
-    }
-    else if(e.keyCode == 37) {
-        leftPressed = false;
+function mouseMoveHandler(e) {
+    let mousePositionX = e.clientX;
+
+    if (mousePositionX > 0 && mousePositionX < canvasWidth) {
+        paddlePositionX = mousePositionX - paddleWidth/2;
     }
 }
 
-function draw() {
+function drawPlayGame() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawPoints();
+    drawLives();
     drawBricks();
     drawBall();
     drawPaddle();
@@ -72,6 +62,12 @@ function drawPoints() {
     context.font = "16px Arial";
     context.fillStyle = "#0095DD";
     context.fillText("Score: "+points, 8, 20);
+}
+
+function drawLives() {
+    context.font = "16px Arial";
+    context.fillStyle = "#0095DD";
+    context.fillText("Lives: "+lives, canvas.width-65, 20);
 }
 
 function drawBricks() {
@@ -146,12 +142,26 @@ function changeBallPositionY() {
         if (ballPositionX > paddlePositionX && ballPositionX < paddlePositionX + paddleWidth) {
             numberToChangeBallPositionY = -numberToChangeBallPositionY;
         } else {
-            alert('game over');
+            ballPositionX = canvasWidth/2;
+            ballPositionY = canvasHeight-30;
             numberToChangeBallPositionY = -numberToChangeBallPositionY;
+
+            if(lives > 0) {
+                lives--;
+            } else {
+                clearInterval(drawingInterval);
+                drawGameOverText();
+            }
         }
     }
 
     ballPositionY += numberToChangeBallPositionY;
+}
+
+function drawGameOverText() {
+    context.font = "16px Arial";
+    context.fillStyle = "#0095DD";
+    context.fillText("GAME OVER", canvasWidth/2-50, canvasHeight/2);
 }
 
 function changePaddlePosition() {
@@ -164,4 +174,4 @@ function changePaddlePosition() {
     }
 }
 
-setInterval(draw, 10);
+const drawingInterval = setInterval(drawPlayGame, 10);

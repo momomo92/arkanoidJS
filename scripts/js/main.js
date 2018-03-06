@@ -1,30 +1,34 @@
+//canvas variables
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext("2d");
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
-const brickRowCount = 3;
-const brickColumnsCount = 5;
-const brickWidth = 75;
-const brickHeight = 10;
-const brickPadding = 5;
-let brick = [];
+
+//ball variables
 let ballPositionX = canvasWidth/2;
 let ballPositionY = canvasHeight-30;
 let ballRadius = 10;
 let numberToChangeBallPositionX = 1;
 let numberToChangeBallPositionY = 1;
+
+//brick variables
+let brick = [];
+const brickColumnsCount = 5;
+const brickHeight = 10;
+const brickPadding = 5;
+const brickRowCount = 3;
+const brickWidth = 75;
+
+//paddle variables
 const paddleHeight = 10;
 const paddleWidth = 75;
 let paddlePositionX = (canvasWidth - paddleWidth)/2;
+
+//other variables
+let lives = 3;
+let points = 0;
 let rightPressed = false;
 let leftPressed = false;
-let points = 0;
-let lives = 3;
-const startWay = Math.floor((Math.random() * 2) + 1);
-
-if (startWay == 2) {
-    numberToChangeBallPositionY = -numberToChangeBallPositionY;
-}
 
 for (let column = 0; column < brickColumnsCount; column++) {
     brick[column] = [];

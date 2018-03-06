@@ -2,9 +2,13 @@
 .idea/
 .project
 
-#GIT
+# Git
 .git/
 
 # Components
 /scripts/components/
-yarn.lock
+
+# Other
+._*
+.~lock.*
+.buildpath

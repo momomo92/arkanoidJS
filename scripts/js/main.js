@@ -12,12 +12,20 @@ let ballPositionX = canvasWidth/2;
 let ballPositionY = canvasHeight-30;
 let ballRadius = 10;
 let numberToChangeBallPositionX = 1;
-let numberToChangeBallPositionY = -1;
+let numberToChangeBallPositionY;
 const paddleHeight = 10;
 const paddleWidth = 75;
 let paddlePositionX = (canvasWidth - paddleWidth)/2;
 let rightPressed = false;
 let leftPressed = false;
+let points = 0;
+const startWay = Math.floor((Math.random() * 2) + 1);
+
+if (startWay == 1) {
+    numberToChangeBallPositionY = startWay;
+} else {
+    numberToChangeBallPositionY = -startWay;
+}
 
 for (let column = 0; column < brickColumnsCount; column++) {
     brick[column] = [];
@@ -50,6 +58,7 @@ function keyUpHandler(e) {
 
 function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
+    drawPoints();
     drawBricks();
     drawBall();
     drawPaddle();
@@ -57,6 +66,12 @@ function draw() {
     changeBallPositionX();
     changeBallPositionY();
     changePaddlePosition();
+}
+
+function drawPoints() {
+    context.font = "16px Arial";
+    context.fillStyle = "#0095DD";
+    context.fillText("Score: "+points, 8, 20);
 }
 
 function drawBricks() {
@@ -105,6 +120,7 @@ function collisionDetection() {
                 if (isPositionY && isPositionX) {
                     numberToChangeBallPositionY = -numberToChangeBallPositionY;
                     brickData.visible = false;
+                    points++;
                 }
             }
         }
